@@ -8,21 +8,29 @@ var statment = (invoice, plays) =>{
                              minimumFractionDigits: 2}).format
 
     for (let perf of invoice.performances){
-        
-        const thisAount = amountFor(perf)
 
-        volumeCredits += Math.max(perf.audience - 30, 0)
+        volumeCredits  += volumeCreditsFor(perf) 
 
-        if("comedy" == play.type) volumeCredits += Math.floor(perf.audience / 5)
-
-        result += ` ${play.name}: ${format(thisAount/100)} (${perf.audience}석) \n`
-        totalAmout += thisAount
+        result += ` ${playFor(perf).name}: ${format(amountFor(perf)/100)} (${perf.audience}석) \n`
+        totalAmout += amountFor(perf)
     }
 
     result += `총액 : ${format(totalAmout/100)}\n`
     result += `적립 포인트: ${volumeCredits}점\n`
-    return result
 
+    return result
+}
+
+var volumeCreditsFor = (aPerformance) =>{
+
+    let volumeCredits = 0
+
+    volumeCredits += Math.max(aPerformance.audience - 30, 0)
+
+    if("comedy" == playFor(aPerformance).type) 
+        volumeCredits += Math.floor(aPerformance.audience / 5)
+    
+    return volumeCredits
 
 }
 
