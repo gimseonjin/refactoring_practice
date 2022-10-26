@@ -1,28 +1,37 @@
 var statment = (invoice) =>{
 
-    let totalAmout = 0;
     let result = `청구 내역 (고객명 : ${invoice.customer})\n`
 
     for (let perf of invoice.performances){
         result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석) \n`
-        totalAmout += amountFor(perf)
     }
 
-    result += `총액 : ${usd(totalAmout)}\n`
+    result += `총액 : ${usd(totalAmount(invoice.performances))}\n`
     result += `적립 포인트: ${totalVolumeCredits(invoice.performances)}점\n`
 
     return result
 }
 
-var totalVolumeCredits = (aPerformance) => {
+var totalAmount = (aPerformance) => {
 
-    let totalVolumeCredits = 0
+    let result = 0
 
     for (let perf of aPerformance){
-        totalVolumeCredits  += volumeCreditsFor(perf) 
+        result += amountFor(perf)
+    }
+    
+    return result
+}
+
+var totalVolumeCredits = (aPerformance) => {
+
+    let result = 0
+
+    for (let perf of aPerformance){
+        result  += volumeCreditsFor(perf) 
     }
 
-    return totalVolumeCredits
+    return result
 }
 
 var usd = (aPerformance) =>{
