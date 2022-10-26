@@ -9,29 +9,8 @@ var statment = (invoice, plays) =>{
 
     for (let perf of invoice.performances){
         const play = plays[perf.playID];
-        let thisAount = 0;
-
-        switch (play.type){
-            case "tragedy":
-                thisAount = 40000
-
-                if (perf.audience > 30){
-                    thisAount += 1000 * (perf.audience - 30)
-                }
-                break;
-            
-            case "comedy":
-                thisAount = 30000
-
-                if (perf.audience > 20){
-                    thisAount += 10000 + 500 * (perf.audience - 20)
-                }
-                thisAount += 300 * perf.audience
-                break;
-
-            default :
-                throw new Error(`알 수 없는 장르: ${play.type}`)
-        }
+        
+        const thisAount = amountFor(perf, play)
 
         volumeCredits += Math.max(perf.audience - 30, 0)
 
@@ -47,6 +26,36 @@ var statment = (invoice, plays) =>{
 
 
 }
+
+var amountFor = (perf, play) => {
+
+    let result = 0;
+
+    switch (play.type){
+        case "tragedy":
+            result = 40000
+            if (perf.audience > 30){
+                result += 1000 * (perf.audience - 30)
+            }
+            break;
+        
+        case "comedy":
+            result = 30000
+            if (perf.audience > 20){
+                result += 10000 + 500 * (perf.audience - 20)
+            }
+            result += 300 * perf.audience
+            break;
+
+        default :
+            throw new Error(`알 수 없는 장르: ${play.type}`)
+    }
+
+    return result
+}
+
+
+//================== main ==================
 
 import fs from "fs";
 
